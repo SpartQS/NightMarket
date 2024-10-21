@@ -154,13 +154,13 @@ function sendResetEmail(email, resetCode) {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: "gameclub0425@gmail.com", // Ваш email
-            pass: "nneb xboi yxrj clje",    // Пароль или пароль приложения
+            user: "", // Ваш email
+            pass: "",    // Пароль или пароль приложения
         }
     });
 
     const mailOptions = {
-        from: 'gameclub0425@gmail.com',
+        from: '',
         to: email,
         subject: 'Восстановление пароля',
         text: `Ваш код для восстановления пароля: ${resetCode}`
