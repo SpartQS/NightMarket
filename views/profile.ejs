@@ -1,0 +1,242 @@
+<% layout('./layout/page.ejs') %>
+
+    <style>
+        body {
+            background-color: #0C0032;
+            color: #ffffff;
+            padding-bottom: 50px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-color: #0C0032;
+            transition: transform 0.3s, box-shadow 0.3s;
+            color: #0C0032;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header,
+        .card-footer {
+            background-color: #190061;
+            color: #ffffff;
+            border-color: #0C0032;
+            text-align: center;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #190061;
+            border-color: #0C0032;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #ffffff;
+            border-color: #000000;
+            color: #000000;
+        }
+
+        .profile-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        .profile-form,
+        .orders-table {
+            flex: 1;
+        }
+
+        .form-control {
+            width: 90%;
+            padding: 8px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .form-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 16px;
+            display: block;
+            text-align: left;
+            width: 90%;
+        }
+
+        .update-profile-button {
+            margin-top: 10px;
+        }
+
+        table {
+            width: 100%;
+            font-size: 16px;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            text-align: center;
+            padding: 12px;
+            border: 1px solid #ccc;
+            min-width: 150px;
+            word-wrap: break-word;
+        }
+
+        th {
+            background-color: #190061;
+            color: #000000;
+        }
+
+        tbody tr:hover {
+            background-color: rgba(25, 0, 97, 0.1);
+        }
+
+        .hidden-key {
+            display: none;
+            /* Скрываем ключи по умолчанию */
+        }
+    </style>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-form">
+                    <div id="profile" class="card shadow-sm mb-0">
+                        <div class="card-header">
+                            <h5>Профиль пользователя</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="profile-form" action="/update-password" method="post"
+                                onsubmit="return validatePasswords()">
+                                <div>
+                                    <label for="username" class="form-label">Имя пользователя</label>
+                                    <input type="text" class="form-control" id="username" name="username"
+                                        value="<%= user.username %>" required>
+                                </div>
+
+                                <div>
+                                    <label for="current-password" class="form-label">Пароль</label>
+                                    <input type="password" class="form-control" id="current-password"
+                                        name="currentPassword" required>
+                                </div>
+                                <div class="update-profile-button">
+                                    <button type="submit" formaction="/update-username" class="btn btn-primary">Изменить
+                                        имя пользователя</button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="orders-table col-md-8">
+                <div id="orders" class="card shadow-sm mb-0">
+                    <div class="card-header">
+                        <h5>История заказов</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Заказ ID</th>
+                                    <th>Игра</th>
+                                    <th>Ключи</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% orders.forEach(orderWithGames=> { %>
+                                    <% orderWithGames.games.forEach((game, index)=> { %>
+                                        <tr>
+                                            <% if (index===0) { %>
+                                                <td rowspan="<%= orderWithGames.games.length %>">
+                                                    <%= orderWithGames.order.id %>
+                                                </td>
+                                                <% } %>
+                                                    <td>
+                                                        <%= game.title %>
+                                                    </td>
+                                                    <td>
+                                                        <% if (game.game_key) { %>
+                                                            <% if (orderWithGames.order.order_status !=='проведен' ) {
+                                                                %>
+                                                                <button
+                                                                    onclick="sendGameKey('<%= game.game_id %>', '<%= user.id %>', '<%= orderWithGames.order.id %>', this)"
+                                                                    data-key-sent="false">Отправить ключ</button>
+                                                                <% } else { %>
+                                                                    <span>Ключ уже отправлен</span>
+                                                                    <% } %>
+                                                                        <span class="hidden-key"
+                                                                            id="key-<%= orderWithGames.order.id %>-<%= game.game_id %>">Ключ:
+                                                                            <%= game.game_key %>
+                                                                        </span>
+                                                                        <% } else { %>
+                                                                            Нет доступных ключей
+                                                                            <% } %>
+                                                    </td>
+                                        </tr>
+                                        <% }); %>
+                                            <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function sendGameKey(gameId, userId, orderId, button) {
+            button.disabled = true; // Делаем кнопку неактивной
+
+            fetch('/send-key', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ gameId, userId, orderId })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(response.statusText); // Бросаем ошибку, если статус не OK
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert(data.message);
+                    if (data.message === 'Ключ успешно отправлен пользователю.') {
+                        button.innerText = 'Ключ отправлен'; // Обновляем текст кнопки
+                        document.getElementById(`key-${orderId}-${gameId}`).style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    alert('Произошла ошибка. Попробуйте еще раз.'); // Сообщаем пользователю об ошибке
+                    button.disabled = false; // Возвращаем кнопку в активное состояние
+                });
+        }
+
+        function validatePasswords() {
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            if (newPassword !== confirmPassword) {
+                alert("Пароли не совпадают. Пожалуйста, введите одинаковые пароли.");
+                return false;
+            }
+            return true;
+        }
+    </script>

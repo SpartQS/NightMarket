@@ -1,0 +1,295 @@
+<% layout('./layout/page.ejs') %>
+
+  <style>
+    /* Оранжевая цветовая палитра */
+    body {
+      background-color: #0C0032;
+      color: #0C0032;
+      padding-bottom: 50px;
+    }
+
+    .alert {
+      background-color: #ffffff;
+      border-color: #000000;
+    }
+
+    .card {
+      border-color: #0C0032;
+      transition: transform 0.3s, box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-img-top {
+      height: 200px;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .btn {
+      width: auto;
+      padding: 10px;
+      font-size: 16px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .btn-primary {
+      background-color: #190061;
+      border-color: #0C0032;
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background-color: #ffffff;
+      border-color: #000000;
+      color: #000000;
+    }
+
+    .btn-success {
+      background-color: #80e078;
+      border-color: #000000;
+      color: #000000;
+    }
+
+    .btn-success:hover {
+      background-color: #ffffff;
+      border-color: #000000;
+      color: #000000;
+    }
+
+    .btn-danger {
+      background-color: #ffffff;
+      border-color: #000000;
+      color: #000000;
+    }
+
+    .btn-danger:hover {
+      background-color: #ffffff;
+      border-color: #000000;
+      color: #ff0000;
+    }
+
+    .btn-warning {
+      background-color: #190061;
+      border-color: #000000;
+      color: #ffffff;
+    }
+
+    .btn-warning:hover {
+      background-color: #ffffff;
+      border-color: #000000;
+      color: #000000;
+    }
+
+    /* Фильтры */
+    .filter-container {
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .filter-label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .filter-select {
+      margin-bottom: 15px;
+    }
+
+    .filter-button-container {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .card-body {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-title {
+      margin-bottom: 5px;
+    }
+
+    .card-text {
+      margin-bottom: 0;
+      flex-grow: 1;
+    }
+
+    .card-footer {
+      margin-top: auto;
+    }
+  </style>
+
+  <div class="container mt-5">
+    <% if(user) { %>
+      <div class="alert alert-success mt-3" role="alert">
+        Поздравляем, вы вошли в систему!
+      </div>
+      <% } else { %>
+        <div class="alert alert-warning mt-3" role="alert">
+          Пожалуйста, войдите в систему.
+        </div>
+        <% } %>
+
+          <h1 class="mt-4 mb-4">
+            <%= title %>
+          </h1>
+
+          <div class="mb-3">
+            <div class="input-group">
+              <input type="text" class="form-control" id="searchInput" placeholder="Поиск по названию товара...">
+              <button class="btn btn-primary" id="searchButton">Найти</button>
+            </div>
+          </div>
+
+          <div class="mb-4 filter-container">
+            <h3>Фильтр игр</h3>
+            <form id="filterForm">
+              <div class="row">
+                <div class="col-md-4 filter-select">
+                  <label for="genreSelect" class="filter-label">Жанр</label>
+                  <select class="form-select" id="genreSelect">
+                    <option value="">Все жанры</option>
+                    <option value="Action">Экшен</option>
+                    <option value="Adventure">Приключения</option>
+                    <option value="Racing">Гонки</option>
+                    <option value="Strategy">Стратегии</option>
+                    <option value="Fighting">Файтинги</option>
+                    <option value="Horror">Хоррор</option>
+                  </select>
+                </div>
+                <div class="col-md-4 filter-select">
+                  <label for="publisherSelect" class="filter-label">Издатель</label>
+                  <select class="form-select" id="publisherSelect">
+                    <option value="">Все издатели</option>
+                    <option value="Ubisoft">Ubisoft</option>
+                    <option value="EA">EA</option>
+                    <option value="Activision">Activision</option>
+                    <option value="Nintendo">Nintendo</option>
+                    <option value="Sony">Sony</option>
+                    <option value="Rockstar Games">Rockstar Games</option>
+                  </select>
+                </div>
+                <div class="col-md-4 filter-select">
+                  <label for="developerSelect" class="filter-label">Разработчик</label>
+                  <select class="form-select" id="developerSelect">
+                    <option value="">Все разработчики</option>
+                    <option value="Naughty Dog">Naughty Dog</option>
+                    <option value="Rockstar Games">Rockstar Games</option>
+                    <option value="Valve">Valve</option>
+                    <option value="CD Projekt">CD Projekt</option>
+                    <option value="FromSoftware">FromSoftware</option>
+                  </select>
+                </div>
+              </div>
+              <div class="filter-button-container mt-3">
+                <button type="button" class="btn btn-primary" id="filterButton">Применить фильтр</button>
+              </div>
+            </form>
+          </div>
+
+          <% if(user && user.role !==null && user.role===1) { %>
+            <a href="/add-product" class="btn btn-success mb-3">Добавить товар</a>
+            <% } %>
+
+              <div class="row row-cols-1 row-cols-md-3 g-4">
+                <% games.forEach(function(game) { %>
+                  <div class="col" data-genre="<%= game.genre %>" data-publisher="<%= game.publisher %>"
+                    data-developer="<%= game.developer %>">
+                    <a href="/game_page/<%= game.id %>" class="card-link"
+                      style="text-decoration: none; color: inherit;">
+                      <div class="card h-100">
+                        <img src="<%= game.images %>" class="card-img-top img-fluid" alt="<%= game.title %>">
+                        <div class="card-body">
+                          <h5 class="card-title"><strong>
+                              <%= game.title %>
+                            </strong></h5>
+                          <p class="card-text">
+                            <%= game.description %>
+                          </p>
+                        </div>
+                        <div class="card-footer">
+                          <strong>Цена:</strong>
+                          <%= game.price %> руб.
+                            <div class="mt-2">
+                              <form action="/cart" method="post">
+                                <input type="hidden" name="gameId" value="<%= game.id %>">
+                                <% if (game.all_games> 0) { %>
+                                  <% if (user && user.role===0) { %>
+                                    <% if (basketGameIds.includes(game.id)) { %>
+                                      <button type="button" class="btn btn-secondary btn-sm" disabled>В корзине</button>
+                                      <% } else { %>
+                                        <button type="submit" class="btn btn-primary btn-sm">Добавить в корзину</button>
+                                        <% } %>
+                                          <% } %>
+                                            <% } else { %>
+                                              <p class="text-danger mt-2">Товар закончился</p>
+                                              <% } %>
+                              </form>
+
+                              <% if (user && user.role===1) { %>
+                                <form action="/delete-product" method="post" class="mt-2">
+                                  <input type="hidden" name="gameId" value="<%= game.id %>">
+                                  <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                                </form>
+                                <a href="/red-game/<%= game.id %>" class="btn btn-warning btn-sm mt-2">Редактировать</a>
+                                <% } %>
+                            </div>
+
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <% }) %>
+              </div>
+
+
+              <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                  const searchInput = document.getElementById('searchInput');
+                  const searchButton = document.getElementById('searchButton');
+                  const filterButton = document.getElementById('filterButton');
+                  const genreSelect = document.getElementById('genreSelect');
+                  const publisherSelect = document.getElementById('publisherSelect');
+                  const developerSelect = document.getElementById('developerSelect');
+                  const games = document.querySelectorAll('.col');
+
+                  searchButton.addEventListener('click', function () {
+                    const searchValue = searchInput.value.toLowerCase();
+                    games.forEach(game => {
+                      const title = game.querySelector('.card-title').textContent.toLowerCase();
+                      game.style.display = title.includes(searchValue) ? '' : 'none';
+                    });
+                  });
+
+                  filterButton.addEventListener('click', function () {
+                    const selectedGenre = genreSelect.value;
+                    const selectedPublisher = publisherSelect.value;
+                    const selectedDeveloper = developerSelect.value;
+
+                    games.forEach(game => {
+                      const genre = game.getAttribute('data-genre');
+                      const publisher = game.getAttribute('data-publisher');
+                      const developer = game.getAttribute('data-developer');
+
+                      if ((selectedGenre === '' || genre === selectedGenre) &&
+                        (selectedPublisher === '' || publisher === selectedPublisher) &&
+                        (selectedDeveloper === '' || developer === selectedDeveloper)) {
+                        game.style.display = '';
+                      } else {
+                        game.style.display = 'none';
+                      }
+                    });
+                  });
+                });
+              </script>
+  </div>

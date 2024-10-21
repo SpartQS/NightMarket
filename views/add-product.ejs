@@ -1,0 +1,93 @@
+<% layout('./layout/page.ejs') %>
+
+    <style>
+        body {
+            background-color: #FFF0E1;
+            color: #333;
+            padding-bottom: 50px;
+        }
+
+        .form-control {
+            border-color: #0C0032;
+        }
+
+        .form-control:focus {
+            border-color: #190061;
+            box-shadow: 0 0 5px rgba(0, 110, 255, 0.5);
+        }
+
+        .btn-primary {
+            background-color: #0C0032;
+            border-color: #190061;
+        }
+
+        .btn-primary:hover {
+            background-color: #ffffff;
+            border-color: #000000;
+            color: #0C0032;
+        }
+    </style>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Добавление товара</h1>
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form action="/add-product" method="post" class="border p-4 rounded shadow-sm"
+                    enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Название:</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Описание:</label>
+                        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Цена:</label>
+                        <input type="number" class="form-control" id="price" name="price" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="genre" class="form-label">Жанр:</label>
+                        <select class="form-select" id="genre" name="genre" required>
+                            <option value="">Выберите жанр</option>
+                            <option value="Action">Экшен</option>
+                            <option value="Adventure">Приключения</option>
+                            <option value="RPG">Ролевые игры (RPG)</option>
+                            <option value="Shooter">Шутер</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="publisher" class="form-label">Издатель:</label>
+                        <select class="form-select" id="publisher" name="publisher" required>
+                            <option value="">Выберите издателя</option>
+                            <option value="Ubisoft">Ubisoft</option>
+                            <option value="EA">Electronic Arts (EA)</option>
+                            <option value="Rockstar">Rockstar Games</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="developer" class="form-label">Разработчик:</label>
+                        <select class="form-select" id="developer" name="developer" required>
+                            <option value="">Выберите разработчика</option>
+                            <option value="Naughty Dog">Naughty Dog</option>
+                            <option value="CD Projekt Red">CD Projekt Red</option>
+                            <option value="Rockstar">Rockstar Games</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Изображение товара:</label>
+                        <input type="file" name="image" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="trailer" class="form-label">Ссылка на трейлер:</label>
+                        <input type="url" class="form-control" id="trailer" name="trailer" required
+                            placeholder="https://example.com/trailer">
+                    </div>
+                    <div class="mb-3 text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">Добавить товар</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

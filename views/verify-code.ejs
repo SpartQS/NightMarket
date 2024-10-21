@@ -1,0 +1,121 @@
+<% layout('./layout/page.ejs') %>
+
+    <style>
+        /* Цветовая палитра: #190061 и #0C0032 */
+        body {
+            background-color: #0C0032;
+            color: #FFFFFF;
+            padding-bottom: 50px;
+        }
+
+        .form-container {
+            border: 2px solid #190061;
+            /* Рамка формы */
+            padding: 40px;
+            border-radius: 15px;
+            background-color: #FFFFFF;
+            max-width: 500px;
+            /* Увеличенный размер блока */
+            margin: 0 auto;
+            /* Центрирование блока */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            /* Тень для глубины */
+            color: #0C0032;
+        }
+
+        .form-control {
+            border-color: #190061;
+            height: 45px;
+            /* Увеличенная высота полей */
+            width: 100%;
+            font-size: 16px;
+            color: #0C0032;
+            background-color: #F0F0F0;
+            /* Легкий фон для полей */
+        }
+
+        .form-control:focus {
+            border-color: #190061;
+            background-color: #FFFFFF;
+            box-shadow: 0 0 5px rgba(25, 0, 97, 0.5);
+            /* Эффект фокуса */
+        }
+
+        .btn-primary {
+            background-color: #190061;
+            border: 2px solid #190061;
+            /* Исходный цвет рамки */
+            color: #FFFFFF;
+            height: 40px;
+            width: 50%;
+            /* Укороченная кнопка */
+            margin: 20px auto 0 auto;
+            /* Центрирование кнопки */
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #FFFFFF;
+            /* Цвет кнопки при наведении */
+            color: #000000;
+            /* Цвет текста при наведении */
+            border-color: #000000;
+            /* Цвет рамки при наведении */
+        }
+
+        .alert {
+            background-color: #190061;
+            border-color: #0C0032;
+            padding: 0.75rem 1.25rem;
+            margin-top: 1rem;
+            color: #FFFFFF;
+        }
+
+        .form-label {
+            font-weight: bold;
+            color: #0C0032;
+        }
+
+        h1 {
+            text-align: center;
+            color: #190061;
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+    </style>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="form-container">
+                    <h1>Проверка кода</h1>
+                    <form action="/verify-code" method="POST">
+                        <div class="mb-3">
+                            <label for="code" class="form-label">Введите код, отправленный на ваш email:</label>
+                            <input type="text" class="form-control" id="code" name="code" required>
+                        </div>
+
+                        <input type="hidden" name="email" value="<%= email %>"> <!-- Передаем email для смены пароля -->
+
+                        <button class="btn btn-primary" type="submit">Подтвердить</button>
+
+                        <% if (error) { %>
+                            <div class="alert mt-3">
+                                <%= error %>
+                            </div>
+                            <% } %>
+
+                                <% if (message) { %>
+                                    <div class="alert alert-success mt-3">
+                                        <%= message %>
+                                    </div>
+                                    <% } %>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>

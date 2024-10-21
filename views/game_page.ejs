@@ -1,0 +1,182 @@
+<% layout('./layout/page.ejs') %>
+
+    <style>
+        body {
+            background-color: #0C0032;
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+            padding-bottom: 50px;
+        }
+
+        h1 {
+            color: #FF4C29;
+            text-transform: uppercase;
+            font-weight: 900;
+            letter-spacing: 2px;
+            font-size: 3em;
+            text-shadow: 0 4px 10px rgba(255, 76, 41, 0.7);
+        }
+
+        .game-layout {
+            display: flex;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .media-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .game-image img,
+        .game-trailer iframe {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .game-image img:hover,
+        .game-trailer iframe:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
+        }
+
+        .game-details {
+            flex: 1;
+            background-color: #1C064F;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+            color: #EAEAEA;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .game-details h4 {
+            color: #FFD700;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            font-size: 1.5em;
+        }
+
+        .game-details p {
+            color: #D3D3D3;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .btn-primary {
+            background-color: #FF4C29;
+            border-color: #FF4C29;
+            color: #ffffff;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            padding: 12px 18px;
+            border-radius: 8px;
+            width: 100%;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            background-color: #ffffff;
+            border-color: #000000;
+            color: #FF4C29;
+            transform: scale(1.05);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.95);
+        }
+
+        form {
+            margin-bottom: 0;
+        }
+
+        .text-danger {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+
+    <div class="container mt-5">
+        <h1 class="mt-4 mb-4">
+            <%= game.title %>
+        </h1>
+
+        <div class="game-layout">
+            <div class="media-section">
+                <div class="game-image">
+                    <img src="<%= game.images %>" alt="<%= game.title %>">
+                </div>
+
+                <div class="game-trailer">
+                    <iframe src="<%= game.trailer %>" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+                </div>
+            </div>
+
+            <div class="game-details">
+                <h4>Описание</h4>
+                <p>
+                    <%= game.description %>
+                </p>
+
+                <h4>Цена</h4>
+                <p>
+                    <%= game.price %> руб.
+                </p>
+
+                <h4>Жанр</h4>
+                <p>
+                    <%= game.genre %>
+                </p>
+
+                <h4>Издатель</h4>
+                <p>
+                    <%= game.publisher %>
+                </p>
+
+                <h4>Разработчик</h4>
+                <p>
+                    <%= game.developer %>
+                </p>
+
+                <h4>Системные требования</h4>
+                <p>
+                    <%= game.system_requirements %>
+                </p>
+
+                <% if (game.all_games> 0 && user && user.role === 0) { %>
+                    <form action="/cart" method="post">
+                        <input type="hidden" name="gameId" value="<%= game.id %>">
+                        <button type="submit" class="btn btn-primary">Добавить в корзину</button>
+                    </form>
+                    <% } else if (game.all_games <=0 && user && user.role===0) { %>
+                        <p class="text-danger mt-2">Товар закончился</p>
+                        <% } %>
+
+                            <% if (user && user.role===1) { %>
+                                <form action="/add-keys/<%= game.id %>" method="post" class="mt-4">
+                                    <div class="form-group">
+                                        <label for="keys" class="form-label">Добавить ключи на игру:</label>
+                                        <textarea class="form-control" id="keys" name="keys" rows="4"
+                                            placeholder="Введите ключи, например, ABCDEFGHIJ1234"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mt-2">Добавить ключи</button>
+                                </form>
+                                <% } %>
+            </div>
+        </div>
+    </div>

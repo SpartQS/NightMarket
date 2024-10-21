@@ -1,0 +1,146 @@
+<% layout('./layout/page.ejs') %>
+
+    <style>
+        body {
+            background-color: #FFF0E1;
+            color: #333;
+            padding-bottom: 50px;
+        }
+
+        .form-control {
+            border-color: #0C0032;
+        }
+
+        .form-control:focus {
+            border-color: #190061;
+            box-shadow: 0 0 5px rgba(0, 110, 255, 0.5);
+        }
+
+        .btn-primary {
+            background-color: #0C0032;
+            border-color: #190061;
+        }
+
+        .btn-primary:hover {
+            background-color: #ffffff;
+            border-color: #000000;
+            color: #0C0032;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .preview-image {
+            max-width: 200px;
+            max-height: 200px;
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+    </style>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">
+            <%= title %>
+        </h1>
+
+        <form action="/red-game/<%= gameId %>" method="post" class="border p-4 rounded shadow-sm"
+            enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="title" class="form-label">Название:</label>
+                <input type="text" class="form-control" id="title" name="title" value="<%= game.title %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Описание:</label>
+                <textarea class="form-control" id="description" name="description" rows="3"
+                    required><%= game.description %></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="price" class="form-label">Цена:</label>
+                <input type="number" class="form-control" id="price" name="price" value="<%= game.price %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="genre" class="form-label">Жанр:</label>
+                <select class="form-select" id="genre" name="genre" required>
+                    <option value="Action" <%=game.genre==='Action' ? 'selected' : '' %>>Экшен</option>
+                    <option value="Adventure" <%=game.genre==='Adventure' ? 'selected' : '' %>>Приключения</option>
+                    <option value="Racing" <%=game.genre==='Racing' ? 'selected' : '' %>>Гонки</option>
+                    <option value="Strategy" <%=game.genre==='Strategy' ? 'selected' : '' %>>Стратегии</option>
+                    <option value="Fighting" <%=game.genre==='Fighting' ? 'selected' : '' %>>Файтинги</option>
+                    <option value="Horror" <%=game.genre==='Horror' ? 'selected' : '' %>>Хоррор</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="publisher" class="form-label">Издатель:</label>
+                <select class="form-select" id="publisher" name="publisher" required>
+                    <option value="Ubisoft" <%=game.publisher==='Ubisoft' ? 'selected' : '' %>>Ubisoft</option>
+                    <option value="EA" <%=game.publisher==='EA' ? 'selected' : '' %>>EA</option>
+                    <option value="Activision" <%=game.publisher==='Activision' ? 'selected' : '' %>>Activision</option>
+                    <option value="Nintendo" <%=game.publisher==='Nintendo' ? 'selected' : '' %>>Nintendo</option>
+                    <option value="Sony" <%=game.publisher==='Sony' ? 'selected' : '' %>>Sony</option>
+                    <option value="Rockstar Games" <%=game.publisher==='Rockstar Games' ? 'selected' : '' %>>Rockstar
+                        Games</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="developer" class="form-label">Разработчик:</label>
+                <select class="form-select" id="developer" name="developer" required>
+                    <option value="Naughty Dog" <%=game.developer==='Naughty Dog' ? 'selected' : '' %>>Naughty Dog
+                    </option>
+                    <option value="Rockstar Games" <%=game.developer==='Rockstar Games' ? 'selected' : '' %>>Rockstar
+                        Games</option>
+                    <option value="Valve" <%=game.developer==='Valve' ? 'selected' : '' %>>Valve</option>
+                    <option value="CD Projekt" <%=game.developer==='CD Projekt' ? 'selected' : '' %>>CD Projekt</option>
+                    <option value="FromSoftware" <%=game.developer==='FromSoftware' ? 'selected' : '' %>>FromSoftware
+                    </option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="image" class="form-label">Загрузить новое изображение:</label>
+                <input type="file" class="form-control" id="image" name="image">
+            </div>
+
+            <div class="mb-3 text-center">
+                <img src="<%= game.images %>" alt="Изображение товара" class="preview-image">
+            </div>
+
+            <div class="mb-3">
+                <label for="trailer" class="form-label">Ссылка на трейлер:</label>
+                <input type="url" class="form-control" id="trailer" name="trailer" value="<%= game.trailer %>" required
+                    placeholder="https://example.com/trailer">
+            </div>
+
+            <div class="mb-3 text-center">
+                <button type="submit" class="btn btn-primary btn-lg">Сохранить</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', function (event) {
+            const trailerInput = document.getElementById('trailer');
+            const urlPattern = /^(http|https):\/\/[^\s$.?#].[^\s]*$/;
+
+            if (!urlPattern.test(trailerInput.value)) {
+                alert('Пожалуйста, введите корректный URL для трейлера.');
+                event.preventDefault();
+            }
+        });
+    </script>

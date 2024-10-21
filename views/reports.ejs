@@ -1,0 +1,121 @@
+<% layout('./layout/page.ejs') %>
+
+    <style>
+        body {
+            background-color: #FFF0E1;
+            color: #333;
+            padding-bottom: 50px;
+        }
+
+        .report-section {
+            padding: 2rem;
+        }
+
+        .report {
+            margin-bottom: 2rem;
+        }
+
+        .report-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #0C0032;
+            margin-bottom: 1rem;
+        }
+
+        .table {
+            border: 1px solid #0C0032;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .table th {
+            background-color: #0C0032;
+            color: #ffffff;
+            border: 1px solid #0C0032;
+            padding: 0.5rem;
+        }
+
+        .table td {
+            border: 1px solid #0C0032;
+            padding: 0.5rem;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #FFF0E1;
+        }
+
+        .table-hover tbody tr:hover td,
+        .table-hover tbody tr:hover th {
+            color: #333;
+        }
+    </style>
+
+    <div class="container">
+        <main class="report-section">
+            <!-- Первый отчет: Отчет о самых дорогих товарах -->
+            <section class="report">
+                <h2 class="report-title">Отчет о самых дорогих товарах</h2>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Название</th>
+                            <th scope="col">Описание</th>
+                            <th scope="col">Цена (руб.)</th>
+                            <th scope="col">Количество на складе</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% games.forEach(game=> { %>
+                            <tr>
+                                <td>
+                                    <%= game.title %>
+                                </td>
+                                <td>
+                                    <%= game.description %>
+                                </td>
+                                <td>
+                                    <%= game.price.toFixed(2) %>
+                                </td>
+                                <td>
+                                    <%= game.all_games %>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Второй отчет: Устройства с количеством на складе меньше 10 -->
+            <section class="report">
+                <h2 class="report-title">Отчет о заканчивающихся товарах</h2>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Название</th>
+                            <th scope="col">Описание</th>
+                            <th scope="col">Цена (руб.)</th>
+                            <th scope="col">Количество на складе</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% lowStockgames.forEach(game=> { %>
+                            <tr>
+                                <td>
+                                    <%= game.title %>
+                                </td>
+                                <td>
+                                    <%= game.description %>
+                                </td>
+                                <td>
+                                    <%= game.price.toFixed(2) %>
+                                </td>
+                                <td>
+                                    <%= game.all_games %>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>

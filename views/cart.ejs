@@ -1,0 +1,188 @@
+<% layout('./layout/page.ejs') %>
+
+  <style>
+    body {
+      background-color: #F8F9FA;
+      color: #333;
+      padding-bottom: 50px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .header h2 {
+      font-size: 28px;
+      color: #190061;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      padding: 20px;
+    }
+
+    .cart-item img {
+      max-width: 120px;
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-right: 20px;
+    }
+
+    .cart-item-details {
+      flex: 1;
+      padding: 0 20px;
+      max-width: 500px;
+    }
+
+    .cart-item-details h5 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      color: #0C0032;
+    }
+
+    .cart-item-details p {
+      margin: 0;
+      color: #555;
+      font-size: 16px;
+      max-height: 50px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .cart-item-price {
+      font-size: 18px;
+      font-weight: bold;
+      margin-right: 10px;
+      margin-top: 2%;
+      color: #0C0032;
+    }
+
+    .cart-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .cart-summary {
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      text-align: right;
+    }
+
+    .cart-summary p {
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+
+    .btn-custom {
+      background-color: #190061;
+      color: #fff;
+      font-size: 18px;
+      padding: 12px;
+      width: 100%;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-custom:hover {
+      background-color: #ffffff;
+      border-color: #000000;
+      color: #000000;
+    }
+
+    .icon-button {
+      background: none;
+      border: none;
+      color: #0C0032;
+      cursor: pointer;
+      transition: color 0.3s;
+      padding: 0;
+    }
+
+    .icon-button:hover {
+      color: #190061;
+    }
+
+    .icon-image {
+      width: 20px;
+      height: auto;
+    }
+
+    .trash-icon {
+      width: 30px;
+      height: auto;
+    }
+  </style>
+
+  <div class="container mt-5">
+    <% if (basket.length===0) { %>
+      <div class="text-center header">
+        <h2>Ваша корзина пуста</h2>
+        <p>Добавьте товары, чтобы они появились здесь.</p>
+      </div>
+      <% } else { %>
+        <div class="row">
+          <div class="col-md-8">
+            <% basket.forEach(function(order) { %>
+              <div class="cart-item">
+                <img src="<%= order.images %>" alt="<%= order.title %>">
+                <div class="cart-item-details">
+                  <h5>
+                    <%= order.title %>
+                  </h5>
+                  <p>Описание: <%= order.description %>
+                  </p>
+                </div>
+                <div class="cart-item-price">
+                  <p>
+                    <%= order.price %> руб.
+                  </p>
+                </div>
+                <div class="cart-actions">
+                  <form action="/remove-item" method="post">
+                    <input type="hidden" name="orderId" value="<%= order.id %>">
+                    <!-- Уменьшенная иконка минуса -->
+                    <button type="submit" class="icon-button">
+                      <img src="/images/minus.png" alt="Удалить" class="icon-image">
+                    </button>
+                  </form>
+                </div>
+              </div>
+              <% }) %>
+          </div>
+
+          <div class="col-md-4">
+            <div class="cart-summary">
+              <p>Общее количество товаров: <%= totalQuantity %>
+              </p>
+              <p>Общая цена: <%= totalPrice %> руб.</p>
+
+              <form action="/clear-cart" method="post" class="mb-3">
+                <button type="submit" class="icon-button trash-icon">
+                  <img src="/images/card_icon.png" alt="Очистить корзину" class="trash-icon">
+                </button>
+              </form>
+              <form action="/buy-cart" method="post">
+                <button type="submit" class="btn btn-custom">Купить</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <% } %>
+  </div>
