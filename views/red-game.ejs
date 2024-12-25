@@ -70,6 +70,16 @@
                 <label for="price" class="form-label">Цена:</label>
                 <input type="number" class="form-control" id="price" name="price" value="<%= game.price %>" required>
             </div>
+            <div class="mb-3">
+                <label for="discount_percentage">Скидка (%):</label>
+                <input type="number" id="discount_percentage" name="discount_percentage"
+                    value="<%= game.discount_percentage %>" min="0" max="100">
+            </div>
+            <div class="mb-3">
+                <label for="discount_expiration">Срок действия скидки:</label>
+                <input type="datetime-local" id="discount_expiration" name="discount_expiration"
+                    value="<%= game.discount_expiration ? game.discount_expiration.toISOString().slice(0, -1) : '' %>">
+            </div>
 
             <div class="mb-3">
                 <label for="genre" class="form-label">Жанр:</label>
@@ -108,6 +118,11 @@
                     <option value="FromSoftware" <%=game.developer==='FromSoftware' ? 'selected' : '' %>>FromSoftware
                     </option>
                 </select>
+            </div>
+            <div class="mb-3">
+                <label for="system_requirements" class="form-label">Системные требования:</label>
+                <textarea class="form-control" id="system_requirements" name="system_requirements" rows="3"
+                    required><%= game.system_requirements %></textarea>
             </div>
 
             <div class="mb-3">

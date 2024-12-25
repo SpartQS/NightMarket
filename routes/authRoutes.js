@@ -10,7 +10,7 @@ const bcrypt = require('bcrypt');
 // Роут для отображения страницы входа
 router.get('/login', async function (req, res, next) {
     const user = req.session.user;
-    const errorMessage = res.locals.errorMessage || null; // Получаем сообщение об ошибке, если оно есть
+    const errorMessage = res.locals.errorMessage || null;
     res.render('login', { title: 'Вход', error: errorMessage, user: user });
 });
 
@@ -36,12 +36,12 @@ router.post('/login', function (req, res, next) {
                     req.session.user = user;
                     res.redirect('/');
                 } else {
-                    // Неверный пароль
+
                     res.render('login', { title: 'Вход', error: "Неверный пароль", user: null });
                 }
             });
         } else {
-            // Пользователь с таким email не найден
+
             res.render('login', { title: 'Вход', error: "Пользователь не найден", user: null });
         }
     });
@@ -86,15 +86,15 @@ router.post('/register', function (req, res, next) {
 
         // Вставка нового пользователя в базу данных
         db.query('INSERT INTO user (username, password, email) VALUES (?, ?, ?)',
-            [username, hashedPassword, email], // Используем хэшированный пароль
+            [username, hashedPassword, email],
             function (err, result) {
                 if (err) return next(err);
 
-                // Устанавливаем пользовательскую сессию
+
                 req.session.user = result.insertId;
                 res.locals.user = { id: result.insertId, username: username, email: email };
 
-                // Редирект после успешной регистрации
+
                 res.redirect('/');
             });
     });
@@ -105,7 +105,7 @@ router.get('/forgot-password', (req, res) => {
     res.render('forgot-password', {
         title: 'Забыли пароль?',
         error: null,
-        message: null // Значение по умолчанию для message
+        message: null
     });
 });
 
@@ -121,13 +121,13 @@ router.post('/forgot-password', (req, res, next) => {
             return res.render('forgot-password', {
                 title: 'Забыли пароль?',
                 error: 'Пользователь с таким email не найден',
-                message: null // Избегаем ошибки с неопределенным message
+                message: null
             });
         }
 
         const user = users[0];
-        const resetCode = generateResetToken(); // Генерация кода для восстановления пароля
-        const resetTokenExpiry = new Date(Date.now() + 3600000); // Код действителен 1 час
+        const resetCode = generateResetToken();
+        const resetTokenExpiry = new Date(Date.now() + 3600000);
 
         // Сохраняем код и время истечения в базе данных
         db.query('UPDATE user SET reset_code = ?, reset_code_expiry = ? WHERE email = ?',
@@ -146,7 +146,7 @@ router.post('/forgot-password', (req, res, next) => {
 
 // Генерация кода для восстановления пароля
 function generateResetToken() {
-    return crypto.randomBytes(20).toString('hex'); // Генерация случайного кода
+    return crypto.randomBytes(20).toString('hex');
 }
 
 // Отправка письма с кодом сброса пароля
@@ -154,8 +154,8 @@ function sendResetEmail(email, resetCode) {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: "", // Ваш email
-            pass: "",    // Пароль или пароль приложения
+            user: "",
+            pass: "",
         }
     });
 

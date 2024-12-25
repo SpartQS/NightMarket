@@ -219,38 +219,75 @@
                         </div>
                         <div class="card-footer">
                           <strong>Цена:</strong>
-                          <%= game.price %> руб.
-                            <div class="mt-2">
-                              <form action="/cart" method="post">
-                                <input type="hidden" name="gameId" value="<%= game.id %>">
-                                <% if (game.all_games> 0) { %>
-                                  <% if (user && user.role===0) { %>
-                                    <% if (basketGameIds.includes(game.id)) { %>
-                                      <button type="button" class="btn btn-secondary btn-sm" disabled>В корзине</button>
-                                      <% } else { %>
-                                        <button type="submit" class="btn btn-primary btn-sm">Добавить в корзину</button>
+                          <% if (game.discount_percentage> 0 && (!game.discount_expiration || new
+                            Date(game.discount_expiration) > new Date())) { %>
+                            <!— Цена со скидкой —>
+                              <span class="discounted-price"
+                                style="font-size: 1.2em; color: #FF4C29; font-weight: bold;">
+                                <%= Math.floor(game.price) %> руб.
+                              </span>
+                              <br>
+                              <span class="discount-details" style="color: #FF4C29; font-size: 1em;">
+                                (-<%= game.discount_percentage %>% скидка)
+                              </span>
+                              <% } else { %>
+                                <!— Обычная цена —>
+                                  <span style="font-size: 1.2em; color: #190061; font-weight: bold;">
+                                    <%= Math.floor(game.price) %> руб.
+                                  </span>
+                                  <% } %>
+                                    <div class="mt-2">
+                                      <form action="/cart" method="post">
+                                        <input type="hidden" name="gameId" value="<%= game.id %>">
+                                        <% if (game.all_games> 0) { %>
+                                          <% if (user && user.role===0) { %>
+                                            <% if (basketGameIds.includes(game.id)) { %>
+                                              <button type="button" class="btn btn-secondary btn-sm" disabled>В
+                                                корзине</button>
+                                              <% } else { %>
+                                                <button type="submit" class="btn btn-primary btn-sm">Добавить в
+                                                  корзину</button>
+                                                <% } %>
+                                                  <% } %>
+                                                    <% } else { %>
+                                                      <p class="text-danger mt-2">Товар закончился</p>
+                                                      <% } %>
+                                      </form>
+
+                                      <% if (user && user.role===1) { %>
+                                        <form action="/delete-product" method="post" class="mt-2"
+                                          onsubmit="return confirmDelete();">
+                                          <input type="hidden" name="gameId" value="<%= game.id %>">
+                                          <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                                        </form>
+                                        <a href="/red-game/<%= game.id %>"
+                                          class="btn btn-warning btn-sm mt-2">Редактировать</a>
                                         <% } %>
-                                          <% } %>
-                                            <% } else { %>
-                                              <p class="text-danger mt-2">Товар закончился</p>
-                                              <% } %>
-                              </form>
-
-                              <% if (user && user.role===1) { %>
-                                <form action="/delete-product" method="post" class="mt-2">
-                                  <input type="hidden" name="gameId" value="<%= game.id %>">
-                                  <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
-                                </form>
-                                <a href="/red-game/<%= game.id %>" class="btn btn-warning btn-sm mt-2">Редактировать</a>
-                                <% } %>
-                            </div>
-
+                                    </div>
                         </div>
                       </div>
                     </a>
                   </div>
                   <% }) %>
               </div>
+
+              <footer class="mt-5 text-center"
+                style="background-color: #f8f9fa; padding: 20px; border-top: 1px solid #ddd;">
+                <div class="container">
+                  <p>
+                    <a href="/privacy-policy" class="text-decoration-none" style="color: #190061;">Политика
+                      конфиденциальности</a>
+                    |
+                    <a href="https://t.me/your_support_bot" target="_blank" class="text-decoration-none"
+                      style="color: #190061;">
+                      Поддержка в Telegram
+                    </a>
+                  </p>
+                  <p style="font-size: 0.9em; color: #6c757d;">
+                    © 2024 NightMarket. Все права защищены.
+                  </p>
+                </div>
+              </footer>
 
 
               <script>
@@ -291,5 +328,9 @@
                     });
                   });
                 });
+
+                function confirmDelete() {
+                  return confirm("Вы точно хотите удалить?");
+                }
               </script>
   </div>

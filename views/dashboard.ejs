@@ -1,0 +1,135 @@
+<% layout('./layout/page.ejs') %>
+    <!DOCTYPE html>
+    <html lang="ru">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>
+            <%= title %>
+        </title>
+        <link rel="stylesheet" href="/stylesheets/dashboard.css">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </head>
+
+    <body>
+        <style>
+            body {
+                background-color: #FFF0E1;
+                color: #333;
+                padding-bottom: 50px;
+            }
+
+            .dashboard-section {
+                padding: 2rem;
+            }
+
+            .dashboard-title {
+                font-size: 2rem;
+                font-weight: bold;
+                color: #0C0032;
+                margin-bottom: 1rem;
+                text-align: center;
+            }
+
+            .stats {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 2rem;
+            }
+
+            .stat-item {
+                flex: 1;
+                margin: 0 0.5rem;
+                padding: 1rem;
+                border: 1px solid #0C0032;
+                border-radius: 8px;
+                background-color: #ffffff;
+                text-align: center;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+
+            .stat-title {
+                font-size: 1.2rem;
+                font-weight: bold;
+                color: #0C0032;
+                margin-bottom: 0.5rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+                color: #000000;
+            }
+
+            .top-games {
+                margin-bottom: 2rem;
+                border: 1px solid #0C0032;
+                border-radius: 8px;
+                background-color: #ffffff;
+                padding: 1rem;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .top-game {
+                background-color: #ffffff;
+                border: 1px solid #0C0032;
+                border-radius: 8px;
+                padding: 10px;
+                margin: 5px 0;
+                color: #000000;
+            }
+
+            .top-games-list {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+        </style>
+
+        <div class="container">
+            <main class="dashboard-section">
+                <h2 class="dashboard-title">Дашборд</h2>
+
+                <!-- Основная статистика -->
+                <div class="stats">
+                    <div class="stat-item">
+                        <h3 class="stat-title">Общее количество заказов</h3>
+                        <p class="stat-value">
+                            <%= orders.length %>
+                        </p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 class="stat-title">Общая сумма заказов</h3>
+                        <p class="stat-value">
+                            <%= orders.reduce((acc, order)=> acc + order.total_amount, 0) %> ₽
+                        </p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 class="stat-title">Количество проведенных заказов</h3>
+                        <p class="stat-value">
+                            <%= orders.filter(order=> order.order_status === "проведен").length %>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Самые продаваемые игры -->
+                <section class="top-games">
+                    <h3 class="dashboard-title">Топ продаваемых игр</h3>
+                    <div class="top-games-list">
+                        <% topGames.forEach(game=> { %>
+                            <div class="top-game">
+                                <p><strong>Название:</strong>
+                                    <%= game.title %>
+                                </p>
+                                <p><strong>Количество продаж:</strong>
+                                    <%= game.total_sales %>
+                                </p>
+                            </div>
+                            <% }) %>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </body>
+
+    </html>
