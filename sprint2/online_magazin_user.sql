@@ -40,7 +40,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (5,'admin','$2b$10$X8EERAcn9T4cu06Kssuy3.CzHQKTObKAJT2gp0vxf/XDOKYEo4mV6','as252005as6661795@gmail.com',1,NULL,NULL),(9,'Aslan','$2b$10$rEYcsrAv63eS7sSQ3nrtCOnBK3YSgeyuE/uOubsXX2IjMwoX9ZXHK','reshetov.aslan.i22@gmail.com',0,NULL,NULL),(22,'Garou','$2b$10$t3vo6stZUW1d7NGSxQRQ7.WuoQBCUMZjHmJJ7oMlnet4VwD5HLSmO','user@gmail.com',0,NULL,NULL);
+INSERT INTO `user` VALUES (5,'admin','$2b$10$yHW5wCnwIR46l8FUhkfJJOyaq90cMPPk/hdNxbnowXSu58LxMChqK','as252005as6661795@gmail.com',1,NULL,NULL),(9,'Aslan','$2b$10$lBduFGaVfFoQpy.9gOIF6Obj9E2XuRQXKxlKrUU8REc12QeubW9Xi','reshetov.aslan.i22@gmail.com',0,'7d04951a6339db84e3fb61320da9cdba7a4f74a2','2024-12-08 21:43:54'),(22,'Garou','$2b$10$t3vo6stZUW1d7NGSxQRQ7.WuoQBCUMZjHmJJ7oMlnet4VwD5HLSmO','user@gmail.com',0,NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-29 18:57:11
+-- Dump completed on 2024-12-25 15:08:38

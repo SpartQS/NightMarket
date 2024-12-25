@@ -31,7 +31,7 @@ CREATE TABLE `order_games` (
   KEY `games_id` (`games_id`),
   CONSTRAINT `order_games_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),
   CONSTRAINT `order_games_ibfk_2` FOREIGN KEY (`games_id`) REFERENCES `games` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `order_games` (
 
 LOCK TABLES `order_games` WRITE;
 /*!40000 ALTER TABLE `order_games` DISABLE KEYS */;
-INSERT INTO `order_games` VALUES (48,122,4),(49,123,4),(50,124,4),(51,125,1),(52,126,2),(53,127,4),(54,128,1),(55,129,1),(56,130,1),(57,131,1),(58,132,1),(59,133,2),(60,134,4),(61,135,1),(62,136,1);
+INSERT INTO `order_games` VALUES (48,122,4),(49,123,4),(50,124,4),(51,125,1),(52,126,2),(53,127,4),(54,128,1),(55,129,1),(56,130,1),(57,131,1),(58,132,1),(59,133,2),(60,134,4),(61,135,1),(62,136,1),(63,137,1),(64,138,1),(65,139,1);
 /*!40000 ALTER TABLE `order_games` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-10-29 18:57:11
+-- Dump completed on 2024-12-25 15:08:38
